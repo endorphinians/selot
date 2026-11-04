@@ -1,0 +1,6 @@
+# Tooling artifacts pulled in by the local toolchain, not part of the project.
+node_modules/
+.next/
+
+# Standalone single-file build output (arcade/build.mjs).
+arcade/SELOT-Arcade.html

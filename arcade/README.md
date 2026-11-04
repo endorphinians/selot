@@ -14,6 +14,15 @@ packages or credentials. For a single offline HTML file, run
 `node arcade/build.mjs /path/to/SELOT-Arcade.html`. Use the local server for
 consistent browser storage across reloads.
 
+The repository root also carries an `index.html` entry point that forwards to
+`arcade/`, so a static server rooted at the repository root — the hosted
+preview, for instance — opens the client instead of a directory listing.
+
+The reel symbols are Unicode characters (✦ ☀ ✚ ♜ ◆ ▣ ✿ ✸ ⚑ and the rest), so
+the machine needs a font that covers them. macOS and Windows ship one;
+a bare Linux container does not, and the reels fall back to empty boxes until
+`fonts-noto-core` and `fonts-dejavu-core` are installed.
+
 ## Configuration
 
 `tables.js` is generated from the original `resources/scripts` workbooks by
