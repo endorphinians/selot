@@ -12,6 +12,7 @@ const arcade = (() => {
     return {
       credits: startingCredits,
       claimedOn: "",
+      sound: true,
       games: Object.fromEntries(machineIds.map(id => [id, emptyGame()])),
     };
   }
@@ -22,6 +23,7 @@ const arcade = (() => {
       const stored = JSON.parse(serialized);
       if (!stored || !Number.isSafeInteger(stored.credits) || stored.credits < 0) return initial;
       initial.credits = stored.credits;
+      initial.sound = typeof stored.sound === "boolean" ? stored.sound : true;
       if (typeof stored.claimedOn === "string" && /^\d{4}-\d{2}-\d{2}$/.test(stored.claimedOn)) {
         initial.claimedOn = stored.claimedOn;
       }

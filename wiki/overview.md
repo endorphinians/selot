@@ -8,8 +8,9 @@ machines — Aztec, Ocean World, and Sparta — with fictional credits.
 The browser client is the only thing in the repository that a browser can run.
 It is dependency-free static HTML/CSS/JavaScript: `tables.js` holds reel strips,
 paylines, and paytables exported from `resources/scripts`; `game.js` holds the
-spin engine; `app.js` renders the lobby and the cabinets. Guest play shares one
-balance across all three machines in `localStorage`.
+spin engine; `sound.js` synthesises every cue with the WebAudio API; `app.js`
+renders the lobby and the cabinets. Guest play shares one balance across all
+three machines in `localStorage`.
 
 The rest of the repository — the Java server, the build tooling, the robot, the
 H5 code generator — is source-only. Running it needs a JVM, a MySQL database,

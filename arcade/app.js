@@ -3,6 +3,9 @@
   const format = new Intl.NumberFormat("en");
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const $ = id => document.getElementById(id);
+  const sound = typeof arcadeSound !== "undefined" ? arcadeSound : {
+    unlock() {}, setEnabled() {}, cancel() {}, spin() {}, coin() {},
+  };
 
   const machines = {
     aztec: {
@@ -49,12 +52,14 @@
   }
 
   function refreshProfile() {
-    if (!canSave) return;
-    try {
-      profile = arcade.readProfile(localStorage.getItem(storageKey));
-    } catch {
-      unavailableStorage();
+    if (canSave) {
+      try {
+        profile = arcade.readProfile(localStorage.getItem(storageKey));
+      } catch {
+        unavailableStorage();
+      }
     }
+    sound.setEnabled(profile.sound);
   }
 
   function saveProfile() {
@@ -69,6 +74,14 @@
   function currentBet(id) {
     const game = profile.games[id];
     return game.free ? game.freeBet : slotTables[id].bets[game.betIndex];
+  }
+
+  /** Free spins awarded by a spin, read from the note the engine wrote. */
+  function freeSpinsAwarded(result) {
+    const note = result.notes.find(text => /free spins$/.test(text));
+    if (!note) return 0;
+    const count = Number(note.match(/\d+/)?.[0]);
+    return Number.isFinite(count) ? count : 0;
   }
 
   function cabinetCard(id, machine) {
@@ -153,8 +166,15 @@
 
   function render() {
     $("balance").textContent = format.format(profile.credits);
+    renderSound();
     renderLobby();
     if (activeId) renderPlay(activeId);
+  }
+
+  function renderSound() {
+    const toggle = $("sound-toggle");
+    toggle.setAttribute("aria-pressed", String(Boolean(profile.sound)));
+    toggle.title = profile.sound ? "Mute sound" : "Turn sound on";
   }
 
   function navigate(focus) {
@@ -167,7 +187,7 @@
     if (focus) $(activeId ? "machine-title" : "lobby-title").focus();
   }
 
-  async function transact(action, animateId = null) {
+  async function transact(action, animateId = null, onOutcome = null) {
     if (busy) return;
     busy = true;
     actionMessage = "";
@@ -181,6 +201,13 @@
     try {
       const useLock = navigator.locks && location.protocol !== "file:" && canSave;
       const changed = useLock ? await navigator.locks.request(storageKey, commit) : commit();
+      if (onOutcome) {
+        try {
+          onOutcome(changed);
+        } catch {
+          /* a missing cue must never break the spin */
+        }
+      }
       if (changed && animateId === activeId && animateId && !reduceMotion.matches) {
         animationId = animateId;
         render();
@@ -194,14 +221,38 @@
   }
 
   $("machines").innerHTML = Object.entries(machines).map(([id, machine]) => cabinetCard(id, machine)).join("");
-  $("claim").addEventListener("click", () => transact(() => arcade.claim(profile)));
+  $("sound-toggle").addEventListener("click", () => {
+    refreshProfile();
+    profile.sound = !profile.sound;
+    saveProfile();
+    sound.setEnabled(profile.sound);
+    if (profile.sound) sound.unlock();
+    render();
+  });
+  $("claim").addEventListener("click", () => {
+    sound.unlock();
+    transact(() => arcade.claim(profile), null, amount => {
+      if (amount) sound.coin();
+    });
+  });
   $("spin").addEventListener("click", () => {
     const id = activeId;
+    sound.unlock();
+    let wager = 0;
     transact(() => {
-      const result = arcade.spin(profile, id, currentBet(id));
+      wager = currentBet(id);
+      const result = arcade.spin(profile, id, wager);
       if (!result) actionMessage = "Balance changed. Choose a stake you can cover.";
       return result;
-    }, id);
+    }, id, result => {
+      if (!result) return;
+      sound.spin({
+        reels: slotTables[id].reels.length,
+        multiple: wager ? result.total / wager : 0,
+        freeSpins: freeSpinsAwarded(result),
+        fast: reduceMotion.matches,
+      });
+    });
   });
   for (const [button, offset] of [["bet-down", -1], ["bet-up", 1]]) {
     $(button).addEventListener("click", () => {

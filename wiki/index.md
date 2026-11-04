@@ -8,6 +8,8 @@ workspace-level and are never written by hand.
 
 - [SELOT Arcade](project/entity-selot-arcade.md) — the static browser client
   with the Aztec, Ocean World, and Sparta cabinets.
+- [Arcade sound](project/entity-arcade-sound.md) — the WebAudio sound layer in
+  `arcade/sound.js` and the persisted mute toggle.
 
 ## Decisions
 
@@ -16,7 +18,8 @@ workspace-level and are never written by hand.
 
 ## Concepts
 
-- None recorded yet.
+- [Arcade expansion plan](project/plan-arcade-expansion.md) — the approved
+  develop scope: sound, paytable, session stats, and more cabinets.
 
 ## Open Questions
 

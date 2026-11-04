@@ -18,8 +18,9 @@ also builds into one offline HTML file.
 | `arcade/style.css` | The whole visual system. Dark green-black ground, cream text, lime accent, one serif display face. |
 | `arcade/tables.js` | Generated reel strips, paylines, bet ladders, and paytables for all three machines. Produced by `arcade/export-config.py` from `resources/scripts`. |
 | `arcade/game.js` | The spin engine. Exposes `arcade` (spin, claim, daily, profile read/write). |
+| `arcade/sound.js` | The synthesised sound layer. Exposes `arcadeSound`. See [arcade sound](entity-arcade-sound.md). |
 | `arcade/app.js` | Rendering, routing by URL hash, and localStorage persistence. |
-| `arcade/build.mjs` | Inlines the CSS and the three scripts into one standalone HTML file. |
+| `arcade/build.mjs` | Inlines the CSS and the four scripts into one standalone HTML file. |
 | `arcade/export-config.py` | Regenerates `tables.js` from the original `.xls` workbooks (needs Python `xlrd`). |
 
 ## The three machines
@@ -35,8 +36,9 @@ also builds into one offline HTML file.
 ## State
 
 One guest profile lives in `localStorage` under `selot.arcade.guest.v1`: a
-shared credit balance (10,000 to start), the daily-claim date, and per-machine
-bet index, free-spin count, puzzle pieces, held cells, and last result.
+shared credit balance (10,000 to start), the daily-claim date, the sound
+preference, and per-machine bet index, free-spin count, puzzle pieces, held
+cells, and last result.
 `readProfile` validates every field on load and falls back to a fresh profile
 if the stored one is malformed, so a hand-edited or truncated entry can never
 break the client.

@@ -9,13 +9,23 @@
   <link rel="stylesheet" href="style.css">
   <script defer src="tables.js"></script>
   <script defer src="game.js"></script>
+  <script defer src="sound.js"></script>
   <script defer src="app.js"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
       <a class="wordmark" href="#lobby" aria-label="Selot Arcade lobby"><span class="logo" aria-hidden="true">✳</span> SELOT<span class="wordmark-sub">ARCADE</span></a>
-      <div class="balance"><span class="coin" aria-hidden="true">◆</span><div><span class="eyebrow">Guest balance</span><strong id="balance">10,000</strong></div></div>
+      <div class="header-tools">
+        <button class="sound-toggle" id="sound-toggle" type="button" aria-pressed="true" aria-label="Sound" title="Mute sound">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path class="icon-speaker" d="M3.5 9.5h3L11 5.6v12.8L6.5 14.5h-3z"/>
+            <path class="icon-wave" d="M14.4 9.6a3.6 3.6 0 0 1 0 4.8M17.2 7.2a7.2 7.2 0 0 1 0 9.6"/>
+            <path class="icon-mute" d="M14.6 9.8l5.2 4.4M19.8 9.8l-5.2 4.4"/>
+          </svg>
+        </button>
+        <div class="balance"><span class="coin" aria-hidden="true">◆</span><div><span class="eyebrow">Guest balance</span><strong id="balance">10,000</strong></div></div>
+      </div>
     </div>
   </header>
 

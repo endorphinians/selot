@@ -23,6 +23,32 @@ the machine needs a font that covers them. macOS and Windows ship one;
 a bare Linux container does not, and the reels fall back to empty boxes until
 `fonts-noto-core` and `fonts-dejavu-core` are installed.
 
+## Sound
+
+`arcade/sound.js` synthesises every cue with the WebAudio API — there are no
+audio files and no dependencies. It is loaded after `game.js` and exposes a
+global `arcadeSound` object.
+
+| Cue | Behaviour |
+| --- | --- |
+| Reel tick | Short filtered-noise click on every pass of a reel, staggered as the reels decelerate. |
+| Land | Low thud when a reel stops. |
+| Line win | Rising three-note chime; every doubling of the payout lifts the pitch. |
+| Big win | Fanfare for a payout of twenty times the stake or more. |
+| Coin | Bright two-note ping when the daily reward is claimed. |
+| Free spins | Ascending sting when free spins are awarded. |
+
+The `AudioContext` is created on the first user gesture — a spin or the daily
+claim — so the browser autoplay policy is never violated, and it is resumed if
+the browser suspended it. Every playback call is guarded, so a host without Web
+Audio plays silently instead of failing, and no cue blocks the UI or the spin
+animation: the whole sequence is scheduled on the audio clock and a new spin
+fades out whatever is still ringing.
+
+The speaker button in the site header mutes the client. The choice is stored as
+a `sound` boolean on the guest profile in `localStorage`, validated in
+`arcade.readProfile` and defaulting to on.
+
 ## Configuration
 
 `tables.js` is generated from the original `resources/scripts` workbooks by

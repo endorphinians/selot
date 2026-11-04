@@ -4,7 +4,7 @@ import { dirname, resolve } from "node:path";
 const output = resolve(process.argv[2] ?? "SELOT-Arcade.html");
 const readSource = file => readFile(new URL(file, import.meta.url), "utf8");
 const [page, style, ...scripts] = await Promise.all(
-  ["index.html", "style.css", "tables.js", "game.js", "app.js"].map(readSource),
+  ["index.html", "style.css", "tables.js", "game.js", "sound.js", "app.js"].map(readSource),
 );
 const standalone = page
   .replace('<link rel="stylesheet" href="style.css">', () => `<style>\n${style}</style>`)
