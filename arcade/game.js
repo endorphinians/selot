@@ -30,19 +30,21 @@ const arcade = (() => {
       for (const id of machineIds) {
         const game = stored.games?.[id];
         const table = slotTables[id];
-        if (!game || !Object.hasOwn(table.bets, game.betIndex)) continue;
+        if (!game || !Number.isInteger(game.betIndex) || !Object.hasOwn(table.bets, game.betIndex)) continue;
         if (!Number.isSafeInteger(game.free) || game.free < 0) continue;
         if (game.free > 0 && !table.bets.includes(game.freeBet)) continue;
         if (!Number.isInteger(game.pieces) || game.pieces < 0 || game.pieces >= 6) continue;
         if (!Array.isArray(game.held) || !game.held.every(cell =>
           Number.isInteger(cell) && cell >= 0 && cell < table.rows * table.reels.length)) continue;
         const last = game.last;
-        const validLast = last && Number.isSafeInteger(last.total) && Array.isArray(last.notes)
+        const symbols = new Set(table.reels.flat());
+        const cells = table.rows * table.reels.length;
+        const validLast = last && Number.isSafeInteger(last.total) && last.total >= 0 && Array.isArray(last.notes)
           && last.notes.every(note => typeof note === "string") && Array.isArray(last.wins)
-          && last.wins.every(cell => Number.isInteger(cell))
+          && last.wins.every(cell => Number.isInteger(cell) && cell >= 0 && cell < cells)
           && Array.isArray(last.grid) && last.grid.length === table.reels.length
           && last.grid.every(reel => Array.isArray(reel) && reel.length === table.rows
-            && reel.every(symbol => Number.isInteger(symbol) && symbol >= 1 && symbol <= 11));
+            && reel.every(symbol => symbols.has(symbol)));
         initial.games[id] = { ...game, last: validLast ? last : null };
       }
     } catch {
