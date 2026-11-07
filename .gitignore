@@ -4,3 +4,6 @@ node_modules/
 
 # Standalone single-file build output (arcade/build.mjs).
 arcade/SELOT-Arcade.html
+
+# Reproducible web build output.
+/dist/

@@ -8,7 +8,7 @@ const [page, style, ...scripts] = await Promise.all(
 );
 const standalone = page
   .replace('<link rel="stylesheet" href="style.css">', () => `<style>\n${style}</style>`)
-  .replace(/^  <script defer src="[^"]+"><\/script>\n/gm, "")
+  .replace(/^\s*<script defer src="[^"]+"><\/script>\s*$/gm, "")
   .replace("</body>", () => `<script>\n${scripts.join("\n")}</script>\n</body>`);
 
 await mkdir(dirname(output), { recursive: true });

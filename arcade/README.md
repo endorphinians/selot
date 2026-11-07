@@ -8,9 +8,14 @@ resets at midnight according to the device's local calendar.
 
 ## Run
 
-From the repository root, serve the client with `python3 -m http.server 8080
---directory arcade` and open <http://localhost:8080>. The client requires no
-packages or credentials. For a single offline HTML file, run
+From the repository root, run `npm test` and `npm run build`, then serve the
+release with `python3 -m http.server 8080 --directory dist` and open
+<http://localhost:8080>. Node.js 20 or newer is required for the build. No
+package installation or credentials are needed. The release includes a
+self-contained offline file at `dist/SELOT-Arcade.html`.
+
+To serve the unbuilt source, use `python3 -m http.server 8080 --directory arcade`.
+For just a single offline HTML file, run
 `node arcade/build.mjs /path/to/SELOT-Arcade.html`. Use the local server for
 consistent browser storage across reloads.
 

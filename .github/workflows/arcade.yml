@@ -1,0 +1,41 @@
+name: Arcade Build
+
+on:
+  push:
+    paths:
+      - 'arcade/**'
+      - 'public/productos-badge.js'
+      - 'package.json'
+      - '.github/workflows/arcade.yml'
+  pull_request:
+    paths:
+      - 'arcade/**'
+      - 'public/productos-badge.js'
+      - 'package.json'
+      - '.github/workflows/arcade.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  arcade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check application syntax
+        run: |
+          node --check arcade/app.js
+          node --check arcade/sound.js
+      - name: Test game and saved-progress rules
+        run: npm test
+      - name: Build the web app and standalone file
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: selot-arcade-web
+          path: dist/
+          if-no-files-found: error
