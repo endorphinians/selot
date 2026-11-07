@@ -56,7 +56,7 @@ usable.
   "static site" rule, so the app survives a sandbox restart instead of
   falling back to the directory listing.
 
-## Sandbox-side fix: symbol fonts
+## Sandbox-side fix: symbol fonts (superseded)
 
 The reel symbols are Unicode, and the container shipped only the four
 Liberation families — every special symbol rendered as an empty box. Fixed by
@@ -64,6 +64,11 @@ installing `fonts-noto-core` and `fonts-dejavu-core` and running `fc-cache -f`.
 Chromium caches its font list at startup, so the browser process must be
 restarted for the change to show.
 
-This is an environment fix, not a code fix: a user's own macOS or Windows
+This was an environment fix, not a code fix: a user's own macOS or Windows
 machine already has fonts covering these characters. A Linux host that serves
-this client needs the same packages.
+this client needed the same packages.
+
+**Superseded on 2026-11-07** — the container was rebuilt without those
+packages and the empty boxes came back. The client now carries the glyphs
+itself, so no host setup is needed: see
+[Bundled symbol font for the arcade cabinets](decision-arcade-symbol-font.md).

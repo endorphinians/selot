@@ -15,6 +15,8 @@ workspace-level and are never written by hand.
 
 - [Repository-root preview entry point](project/decision-preview-entry-point.md)
   — why `/index.html` forwards to `/arcade/` instead of moving the client.
+- [Bundled symbol font](project/decision-arcade-symbol-font.md) — the client
+  ships a subsetted DejaVu Sans so the reel symbols never render as boxes.
 
 ## Concepts
 

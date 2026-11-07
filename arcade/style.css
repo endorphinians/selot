@@ -6,7 +6,7 @@
   --text: #f7f1df;
   --muted: #c2c9b7;
   --lime: #d7ebaa;
-  font-family: system-ui, sans-serif;
+  font-family: "SELOT Symbols", system-ui, sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; min-width: 280px; background: var(--page); color: var(--text); }
@@ -78,7 +78,7 @@ h1 span { color: var(--lime); }
 .cabinet-top { margin-bottom: 10px; }
 .reels { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(3px, 1.25vw, 10px); }
 .reel { display: grid; gap: clamp(3px, 1.1vw, 8px); }
-.tile { height: clamp(43px, 10vw, 83px); display: grid; place-items: center; border: 1px solid var(--frame); border-radius: 6px; background: var(--tile); color: var(--text); font: 700 clamp(1.15rem, 5vw, 2.45rem)/1 Georgia, serif; }
+.tile { height: clamp(43px, 10vw, 83px); display: grid; place-items: center; border: 1px solid var(--frame); border-radius: 6px; background: var(--tile); color: var(--text); font: 700 clamp(1.15rem, 5vw, 2.45rem)/1 "SELOT Symbols", Georgia, serif; }
 .tile-special { color: var(--accent); }
 .tile-win { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .rolling .reel { animation: shuffle .13s ease-in-out alternate infinite; }

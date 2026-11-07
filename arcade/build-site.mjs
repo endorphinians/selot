@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 
 const root = new URL("../", import.meta.url);
 const output = new URL("dist/", root);
-const assets = ["index.html", "style.css", "tables.js", "game.js", "sound.js", "app.js"];
+const assets = ["index.html", "style.css", "symbols.css", "tables.js", "game.js", "sound.js", "app.js"];
 
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });

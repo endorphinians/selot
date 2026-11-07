@@ -23,10 +23,14 @@ The repository root also carries an `index.html` entry point that forwards to
 `arcade/`, so a static server rooted at the repository root — the hosted
 preview, for instance — opens the client instead of a directory listing.
 
-The reel symbols are Unicode characters (✦ ☀ ✚ ♜ ◆ ▣ ✿ ✸ ⚑ and the rest), so
-the machine needs a font that covers them. macOS and Windows ship one;
-a bare Linux container does not, and the reels fall back to empty boxes until
-`fonts-noto-core` and `fonts-dejavu-core` are installed.
+The reel symbols are Unicode characters (✦ ☀ ✚ ♜ ◆ ▣ ✿ ✸ ⚑ and the rest).
+macOS and Windows ship a font that covers them; a bare Linux container does
+not, and the reels fall back to empty boxes. `arcade/symbols.css` therefore
+ships the twenty-three glyphs the arcade draws, subset from DejaVu Sans and
+renamed to `SELOT Symbols`. The `woff2` is inlined as base64, so the offline
+file stays self-contained and the page makes no extra request. The family sits
+ahead of the system stack in `:root` and `.tile`, which leaves the letter ranks
+rendering in the serif. `arcade/FONT-LICENSE.txt` carries the font license.
 
 ## Sound
 
